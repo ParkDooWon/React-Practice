@@ -3,7 +3,7 @@ import UserList from './UserList';
 import CreateUser from './CreateUser';
 
 function countActiveUsers(users) {
-  console.log('start counting!')
+  console.log('count starting!');
   return users.filter(user => user.active).length;
 }
 
@@ -13,14 +13,13 @@ function App() {
     email: ''
   });
   const { username, email } = inputs;
-  const onChange = useCallback(
-      e => {
+  const onChange = useCallback(e => {
     const { name, value } = e.target;
-    setInputs({
+    setInputs(inputs => ({
       ...inputs,
       [name]: value
-    });
-  },[inputs]);
+    }));
+  }, []);
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -49,23 +48,25 @@ function App() {
       username,
       email
     };
-    setUsers(users.concat(user));
+    setUsers(users => users.concat(user));
 
     setInputs({
       username: '',
       email: ''
     });
     nextId.current += 1;
-  }, [users, username, email]);
+  }, [username, email]);
+
   const onRemove = useCallback(id => {
-    setUsers(users.filter(user => user.id !== id))
-  }, [users]);
-  const onToggle = useCallback(id => {  // 완전 탐색으로 모든 users를 확인하여 id를 맞춰본다.
-    setUsers(
-        users.map(user =>   //배열의 불변성을 유지하면서 배열을 업데이트할 때 map을 사용할 수 있다.
-        user.id === id? {...user, active: !user.active} : user)
-    )
-  }, [users]);
+    setUsers(users => users.filter(user => user.id !== id));
+  }, []);
+  const onToggle = useCallback(id => {
+    setUsers(users =>
+        users.map(user =>
+            user.id === id ? { ...user, active: !user.active } : user
+        )
+    );
+  }, []);
   const count = useMemo(() => countActiveUsers(users), [users]);
   return (
       <>
@@ -75,8 +76,8 @@ function App() {
             onChange={onChange}
             onCreate={onCreate}
         />
-        <UserList users={users} onRemove={onRemove} onToggle={onToggle}/>
-        <div>활성 사용자 수: {count}</div>
+        <UserList users={users} onRemove={onRemove} onToggle={onToggle} />
+        <div>활성사용자 수 : {count}</div>
       </>
   );
 }
