@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, useCallback } from 'react';
 import UserList from './UserList';
 import CreateUser from './CreateUser';
 
@@ -13,13 +13,14 @@ function App() {
     email: ''
   });
   const { username, email } = inputs;
-  const onChange = e => {
+  const onChange = useCallback(
+      e => {
     const { name, value } = e.target;
     setInputs({
       ...inputs,
       [name]: value
     });
-  };
+  },[inputs]);
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -42,7 +43,7 @@ function App() {
   ]);
 
   const nextId = useRef(4);
-  const onCreate = () => {
+  const onCreate = useCallback(() => {
     const user = {
       id: nextId.current,
       username,
@@ -55,16 +56,16 @@ function App() {
       email: ''
     });
     nextId.current += 1;
-  };
-  const onRemove = id => {
+  }, [users, username, email]);
+  const onRemove = useCallback(id => {
     setUsers(users.filter(user => user.id !== id))
-  }
-  const onToggle = id => {  // 완전 탐색으로 모든 users를 확인하여 id를 맞춰본다.
+  }, [users]);
+  const onToggle = useCallback(id => {  // 완전 탐색으로 모든 users를 확인하여 id를 맞춰본다.
     setUsers(
         users.map(user =>   //배열의 불변성을 유지하면서 배열을 업데이트할 때 map을 사용할 수 있다.
         user.id === id? {...user, active: !user.active} : user)
     )
-  }
+  }, [users]);
   const count = useMemo(() => countActiveUsers(users), [users]);
   return (
       <>
