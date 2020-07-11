@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {useTodoState} from "../TodoContext";
 
 const TodoHeadBlock = styled.div`  //CSS 컴포넌트를 만들지 않고, CSS Selector를 사용함
     padding-top: 48px;
@@ -26,11 +27,13 @@ const TodoHeadBlock = styled.div`  //CSS 컴포넌트를 만들지 않고, CSS S
 `;
 
 function TodoHead() {
+    const todos = useTodoState();
+    console.log(todos);
     return (
         <TodoHeadBlock>
             <h1>2020.07.04</h1>
-            <div className="day">토요일</div>
-            <div className="tasks-left">할일 N개 남음</div>
+            <div className="day">Saturday</div>
+            <div className="tasks-left">할일 5개 남음</div>
         </TodoHeadBlock>
     )
 }
