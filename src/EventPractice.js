@@ -4,11 +4,25 @@ function EventPractice() {
     const [v, setMe] = useState({name: '', message: ''});
 
     const handleChange = e => {
+        const next = {      // 객체를 하나 만들어서
+            ...v,           // v의 값을 그대로 복사한 후,
+            [e.target.name]: e.target.value //원하는 부분의 값을 덮어쓴다.
+        }
+        setMe(next);
+    }
+
+    const handleClick = () => {
+        alert(v.name + ' ' + v.message);
         setMe({
-            ...v,
-            [e.target.name]: e.target.value     //[어떤 변수] -> 괄호 안에 넣은 레퍼런스(어떤 변) 안에 들어있는 실제 값이 key가 된다.
-        });                                     //만약 a='hi' 라면 hi: e.target.value가 된다. input의 name에 따라 name 혹은 message가 바뀐다.
-        console.log(v.name + ' ' + v.message)
+            name: '',
+            message: ''
+        })
+    }
+
+    const handleKeyPress = (e) => {
+        if(e.key === 'Enter') {
+            handleClick();
+        }
     }
 
     return (
@@ -27,14 +41,9 @@ function EventPractice() {
                 placeholder="아무거나 입력"
                 value={v.message}
                 onChange={handleChange}
+                onKeyPress={handleKeyPress}
             />
-            <button onClick={
-                () => {
-                    console.log(v.name)
-                    alert(v.message + ' ' + v.name);
-                    setMe({name:'', message: ''});
-                }
-            }>확인</button>
+            <button onClick={handleClick}>확인</button>
         </div>
     )
 }
