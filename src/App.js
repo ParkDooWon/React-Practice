@@ -1,6 +1,5 @@
 import React from 'react';
-// import EventPractice from "./EventPractice";
-import IterationSample from "./IterationSample";
+import Info from "./Info";
 
 function App() {
   const names = ['doo', 'ab', 'c'];
@@ -8,7 +7,7 @@ function App() {
   console.log(t);
 
   return (
-      <IterationSample/>
+      <Info/>
   );
 }
 
